@@ -1,7 +1,4 @@
-
 import { observable } from 'mobx'
-
-
 
 export default class topics{
   @observable  allDatas = {}

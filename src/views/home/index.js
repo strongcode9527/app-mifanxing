@@ -19,6 +19,11 @@ export default class App extends Component<Props> {
     const {navigation} = this.props
     navigation.navigate('Detail')
   }
+
+  componentDidMount() {
+
+  }
+
   render() {
     console.log(pathOr, this.props.rootStore)
     return (
