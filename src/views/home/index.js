@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {pathOr} from 'ramda'
 
-@inject('rootStore') // 缓存rootStore,也就是在Root.js注入的
+@inject('store')
 @observer // 将react组件转变为响应式组件, 数据改变自动触发render函数
 export default class App extends Component<Props> {
   constructor(props) {
@@ -21,19 +21,19 @@ export default class App extends Component<Props> {
   }
 
   componentDidMount() {
-
+    this.props.store.afterCreate()
   }
 
   render() {
-    console.log(pathOr, this.props.rootStore)
+    console.log(this.props.store)
     return (
       <View>
         <Text style={styles.welcome}>
           home
         </Text>
         {
-          this.props.rootStore.topics.data.map(item => (
-            <Text style={styles.welcome}>
+          this.props.store.topicStore.topics.map(item => (
+            <Text style={styles.welcome} key={item}>
               {item}
             </Text>
           ))

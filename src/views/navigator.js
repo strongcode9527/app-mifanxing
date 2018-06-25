@@ -1,9 +1,9 @@
 import React from 'react'
 import {Provider} from 'mobx-react'
-// 获取store实例
-import store from '../store'
 import {StackNavigator} from 'react-navigation'
 
+
+import store from '../store'
 import HomeScreen from './home'
 import DetailScreen from './detail'
 
@@ -23,9 +23,14 @@ const Navigator = StackNavigator({
 })
 
 
+const StoreInstance = store.create(
+  {},
+)
+
+
 const  Navigation = () => {
   return (
-    <Provider rootStore={store}>
+    <Provider store={StoreInstance}>
       <Navigator />
     </Provider>
   )

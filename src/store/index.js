@@ -1,9 +1,20 @@
-import topics from './topics'
+import {TopicStore} from './topics'
+import {types, getEnv} from 'mobx-state-tree'
+import axios from 'axios'
 
-class RootStore {
-  constructor() {
-    this.topics = new topics([],this)
-  }
-}
+axios.defaults.baseURL = 'http://www.mifanxing.com/api'
 
-export default new RootStore()
+
+const Store = types.
+  model('mifanxing', {
+    topicStore: types.optional(TopicStore, {
+      topics: [],
+    })
+  })
+  .actions(self => ({
+    afterCreate() {
+      self.topicStore.fetchTopics()
+    }
+  }))
+
+export default Store
