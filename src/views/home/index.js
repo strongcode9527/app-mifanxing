@@ -20,21 +20,21 @@ export default class App extends Component<Props> {
     navigation.navigate('Detail')
   }
 
-  componentDidMount() {
-    this.props.store.afterCreate()
-  }
+  // componentDidMount() {
+  //   this.props.store.afterCreate()
+  // }
 
   render() {
-    console.log(this.props.store)
+    console.log(this.props.store.topicStore.getTopics)
     return (
       <View>
         <Text style={styles.welcome}>
           home
         </Text>
         {
-          this.props.store.topicStore.topics.map(item => (
-            <Text style={styles.welcome} key={item}>
-              {item}
+          this.props.store.topicStore.getTopics.map(item => (
+            <Text style={styles.welcome} key={item.id}>
+              {item.id}
             </Text>
           ))
         }

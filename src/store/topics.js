@@ -5,7 +5,7 @@ import axios from 'axios'
 
 
 export const Topic = types.model('Topic', {
-  id: types.identifier(),
+  id: types.number,
 })
 
 export const TopicStore = types
@@ -20,10 +20,8 @@ export const TopicStore = types
   }))
   .actions(self => {
     const fetchTopics = flow(function* () {
-      const json = axios.get('http://www.mifanxing.com/api/article/topics/search')
-        .then(response => console.log(response))
-        .catch(err => alert(err.toString()))
-
+      const json = yield axios.get('http://www.mifanxing.com/api/article/topics/search')
+      self.topics = json.data.data
     })
 
     return {
