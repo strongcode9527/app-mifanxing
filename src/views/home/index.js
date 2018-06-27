@@ -6,7 +6,8 @@ import {
   Text,
   View,
   Button,
-  Image
+  Image,
+  ScrollView,
 } from 'react-native';
 import {path} from 'ramda'
 
@@ -17,60 +18,81 @@ export default class App extends Component<Props> {
     super(props)
     this.handlePress = this.handlePress.bind(this)
   }
+
+  componentWillMount() {
+    this.props.store.topicStore.fetchTopics(1)
+  }
+
   handlePress() {
     const {navigation} = this.props
     navigation.navigate('Detail')
   }
 
-  componentWillMount() {
-    this.props.store.topicStore.fetchTopics()
+  handleScroll = (e) => {
+    const event = e.nativeEvent,
+          clientHeight = event.layoutMeasurement.height,
+          contentHeight = event.contentSize.height,
+          scrollTop = event.contentOffset.y
+
+    const {fetchTopics, getMeta, getIsLoading} = this.props.store.topicStore
+
+    if(scrollTop + clientHeight === contentHeight) {
+      !getIsLoading && !getMeta.last && fetchTopics(getMeta.number + 1)
+    }
+
   }
 
   render() {
     return (
-      <View>
-        <Text style={styles.welcome}>
-          home
-        </Text>
+      <ScrollView
+        style={styles.all}
+        scrollEventThrottle={200}
+        onScroll={this.handleScroll}
+      >
         {
-          this.props.store.topicStore.getTopics.map(item => (
-            <View key={item.id}>
-              <Text style={styles.welcome} key={item.id}>
-                {item.post.title}
-              </Text>
+          this.props.store.topicStore.topics.map(item => (
+            <View key={item.id} style={styles.li}>
               {
                 path(['images', '0', 'filename'], item) &&
                 <Image
-                  style={{width: 50, height: 50}}
+                  style={{width: '100%', height: 150}}
                   source={{uri: item.images[0].filename}}
                 />
               }
 
-            </View>
+              <Text style={styles.text} key={item.id}>
+                {item.post.title}
+              </Text>
 
+            </View>
           ))
         }
-        <Button onPress={this.handlePress} title="go to detail"/>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  all: {
+    backgroundColor: '#f7f7f7'
+  },
+  li: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
-  welcome: {
+  text: {
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    textAlign: 'left',
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingBottom: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  container: {
+    marginTop: 10,
+    marginBottom: 10,
+  }
 });
