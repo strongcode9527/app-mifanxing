@@ -2,10 +2,22 @@ import {values} from 'mobx'
 import {types, getParent, flow} from 'mobx-state-tree'
 import axios from 'axios'
 
+const post = types.model('post', {
+  title: types.string,
+  // description: types.string,
+})
+
+const image = types.model('image', {
+  filename: types.string,
+})
 
 
 export const Topic = types.model('Topic', {
   id: types.number,
+  images: types.array(image),
+  post: types.optional(post, {
+    title: '',
+  })
 })
 
 export const TopicStore = types

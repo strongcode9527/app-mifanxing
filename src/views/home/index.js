@@ -1,12 +1,14 @@
 import { inject, observer } from 'mobx-react'
 import React, { Component } from 'react';
+
 import {
   StyleSheet,
   Text,
   View,
   Button,
+  Image
 } from 'react-native';
-import {pathOr} from 'ramda'
+import {path} from 'ramda'
 
 @inject('store')
 @observer // 将react组件转变为响应式组件, 数据改变自动触发render函数
@@ -20,12 +22,11 @@ export default class App extends Component<Props> {
     navigation.navigate('Detail')
   }
 
-  // componentDidMount() {
-  //   this.props.store.afterCreate()
-  // }
+  componentWillMount() {
+    this.props.store.topicStore.fetchTopics()
+  }
 
   render() {
-    console.log(this.props.store.topicStore.getTopics)
     return (
       <View>
         <Text style={styles.welcome}>
@@ -33,9 +34,20 @@ export default class App extends Component<Props> {
         </Text>
         {
           this.props.store.topicStore.getTopics.map(item => (
-            <Text style={styles.welcome} key={item.id}>
-              {item.id}
-            </Text>
+            <View key={item.id}>
+              <Text style={styles.welcome} key={item.id}>
+                {item.post.title}
+              </Text>
+              {
+                path(['images', '0', 'filename'], item) &&
+                <Image
+                  style={{width: 50, height: 50}}
+                  source={{uri: item.images[0].filename}}
+                />
+              }
+
+            </View>
+
           ))
         }
         <Button onPress={this.handlePress} title="go to detail"/>
