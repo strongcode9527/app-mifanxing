@@ -1,4 +1,4 @@
-import {topicsResouce} from './resource'
+import {topicsResource} from './resource'
 
 export const fetchTopics = (page, size) => {
   const params = {
@@ -6,10 +6,12 @@ export const fetchTopics = (page, size) => {
     'page[size]': size,
     'page[number]': page,
   }
-  return topicsResouce('get', undefined, {params})
+  return topicsResource('get', 'search', {params})
 }
 
-
+export const fetchTopicDetail = (id) => {
+  return topicsResource('get', id)
+}
 
 
 

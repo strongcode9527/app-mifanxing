@@ -6,6 +6,7 @@ import * as api from '../api'
 const post = types.model('post', {
   title: types.string,
   // description: types.string,
+  content: types.optional(types.string, '')
 })
 
 const image = types.model('image', {
@@ -32,18 +33,16 @@ export const TopicStore = types
     meta: types.optional(Meta, {
       number: 1,
       last: false,
+    }),
+    topic: types.optional(Topic, {
+      id: 0,
+      images: [],
+      post: {
+        title: ''
+      }
     })
   })
   .views(self => ({
-    get getTopics() {
-      return self.topics
-    },
-    get getMeta() {
-      return self.meta
-    },
-    get getIsLoading() {
-      return self.isLoading
-    }
   }))
   .actions(self => {
     const fetchTopics = flow(function* (number) {
@@ -54,7 +53,15 @@ export const TopicStore = types
       self.isloading = false
     })
 
+    const fetchTopicDetail = flow(function* (id) {
+      const json = yield api.fetchTopicDetail(id)
+
+      self.topic = json.data.data
+
+    })
+
     return {
-      fetchTopics
+      fetchTopics,
+      fetchTopicDetail
     }
   })

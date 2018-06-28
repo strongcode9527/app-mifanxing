@@ -2,12 +2,12 @@ import { inject, observer } from 'mobx-react'
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  Text,
   View,
-  Button,
+  Text,
   Image,
+  StyleSheet,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {path} from 'ramda'
 
@@ -21,11 +21,14 @@ export default class App extends Component<Props> {
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
+    console.log('in did mount')
   }
 
-  handlePress() {
+  handlePress(id) {
     const {navigation} = this.props
-    navigation.navigate('Detail')
+    navigation.navigate('Detail', {
+      id,
+    })
   }
 
   handleScroll = (e) => {
@@ -34,10 +37,10 @@ export default class App extends Component<Props> {
           contentHeight = event.contentSize.height,
           scrollTop = event.contentOffset.y
 
-    const {fetchTopics, getMeta, getIsLoading} = this.props.store.topicStore
+    const {fetchTopics, meta, isLoading} = this.props.store.topicStore
 
     if(scrollTop + clientHeight === contentHeight) {
-      !getIsLoading && !getMeta.last && fetchTopics(getMeta.number + 1)
+      !isLoading && !meta.last && fetchTopics(meta.number + 1)
     }
 
   }
@@ -51,20 +54,23 @@ export default class App extends Component<Props> {
       >
         {
           this.props.store.topicStore.topics.map(item => (
-            <View key={item.id} style={styles.li}>
-              {
-                path(['images', '0', 'filename'], item) &&
-                <Image
-                  style={{width: '100%', height: 150}}
-                  source={{uri: item.images[0].filename}}
-                />
-              }
+            <TouchableWithoutFeedback onPress={() => this.handlePress(item.id)} >
+              <View key={item.id} style={styles.li} >
+                {
+                  path(['images', '0', 'filename'], item) &&
+                  <Image
+                    style={{width: '100%', height: 150}}
+                    source={{uri: item.images[0].filename}}
 
-              <Text style={styles.text} key={item.id}>
-                {item.post.title}
-              </Text>
+                  />
+                }
 
-            </View>
+                <Text style={styles.text} key={item.id} id={item.id}>
+                  {item.post.title}
+                </Text>
+
+              </View>
+            </TouchableWithoutFeedback>
           ))
         }
       </ScrollView>
