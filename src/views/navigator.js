@@ -2,7 +2,6 @@ import React from 'react'
 import {Provider} from 'mobx-react'
 import {StackNavigator} from 'react-navigation'
 
-
 import store from '../store'
 import HomeScreen from './home'
 import DetailScreen from './detail'

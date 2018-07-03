@@ -43,6 +43,9 @@ export const TopicStore = types
     })
   })
   .views(self => ({
+    get getTopics() {
+      return self.topics
+    }
   }))
   .actions(self => {
     const fetchTopics = flow(function* (number) {
