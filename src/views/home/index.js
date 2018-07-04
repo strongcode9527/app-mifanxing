@@ -1,5 +1,6 @@
+import {path} from 'ramda'
+import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import React, { Component } from 'react';
 
 import {
   View,
@@ -9,7 +10,6 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {path} from 'ramda'
 
 @inject('store')
 @observer // 将react组件转变为响应式组件, 数据改变自动触发render函数
@@ -70,7 +70,10 @@ export default class App extends Component<Props> {
         <View style={styles.header}>
           {
             titles.map((title, index) => (
-              <Text onPress={() => this.handleChangeTab(index)} style={this.state.activeIndex === index ? styles.active : styles.category}>
+              <Text
+                onPress={() => this.handleChangeTab(index)}
+                style={this.state.activeIndex === index ? styles.active : styles.category}
+              >
                 {title}
               </Text>
             ))
@@ -124,8 +127,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     width: '25%',
-    textAlign: 'center',
     color: 'red',
+    textAlign: 'center',
   },
   title: {
     textAlign: 'center',
@@ -135,18 +138,18 @@ const styles = StyleSheet.create({
   },
   li: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    justifyContent: 'space-between',
   },
   text: {
     fontSize: 20,
-    textAlign: 'left',
     paddingTop: 10,
     paddingLeft: 10,
     paddingBottom: 10,
+    textAlign: 'left',
   },
   container: {
     marginTop: 10,
