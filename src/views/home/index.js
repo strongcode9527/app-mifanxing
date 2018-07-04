@@ -18,6 +18,7 @@ export default class App extends Component<Props> {
     super(props)
 
     this.state = {
+      activeIndex: 0,
       isRefreshing: false,
     }
 
@@ -53,17 +54,34 @@ export default class App extends Component<Props> {
 
   }
 
+  handleChangeTab = (activeIndex) => {
+    this.setState({
+      activeIndex,
+    })
+  }
+
   render() {
-    const {topics} = this.props.store.topicStore
+    const {topics} = this.props.store.topicStore,
+          titles = ['精选', '新闻', '评测', '视频']
+
 
     return (
       <View>
+        <View style={styles.header}>
+          {
+            titles.map((title, index) => (
+              <Text onPress={() => this.handleChangeTab(index)} style={this.state.activeIndex === index ? styles.active : styles.category}>
+                {title}
+              </Text>
+            ))
+          }
+        </View>
         {
           topics.length > 0 &&
           <FlatList
             data={topics}
-            onEndReached={this.handleScroll}
             onRefresh={this.handleRefresh}
+            onEndReached={this.handleScroll}
             refreshing={this.state.isRefreshing}
             renderItem = {({item}) => (
               <TouchableWithoutFeedback onPress={() => this.handlePress(item.id)} >
@@ -91,6 +109,27 @@ export default class App extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flex: 0,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
+  category: {
+    padding: 10,
+    fontSize: 18,
+    width: '25%',
+    textAlign: 'center',
+  },
+  active: {
+    padding: 10,
+    fontSize: 18,
+    width: '25%',
+    textAlign: 'center',
+    color: 'red',
+  },
+  title: {
+    textAlign: 'center',
+  },
   all: {
     backgroundColor: '#f7f7f7'
   },
