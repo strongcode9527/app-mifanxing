@@ -24,6 +24,7 @@ export const Topic = types.model('Topic', {
   post: types.optional(post, {
     title: '',
   }),
+  forumId: types.number,
 })
 
 export const TopicStore = types
@@ -39,18 +40,29 @@ export const TopicStore = types
       images: [],
       post: {
         title: ''
-      }
+      },
+      forumId: 0,
     })
   })
   .views(self => ({
-    get getTopics() {
+    get getAll() {
       return self.topics
+    },
+    get getNews() {
+      return self.topics.filter(item => item.forumId === 3)
+    },
+    get getEvaluatings() {
+      return self.topics.filter(item => item.forumId === 4)
+    },
+    get getVideos() {
+      return self.topics.filter(item => item.forumId === 5)
     }
   }))
   .actions(self => {
-    const fetchTopics = flow(function* (number) {
+    const fetchTopics = flow(function* (number, size, forumId) {
+      console.log(number, size, forumId)
       self.isloading = true
-      const json = yield api.fetchTopics(number)
+      const json = yield api.fetchTopics(number, 10, forumId)
       self.meta = json.data.meta
       self.topics.push(...json.data.data)
       self.isloading = false

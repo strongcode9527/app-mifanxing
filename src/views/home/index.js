@@ -6,8 +6,8 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   FlatList,
+  StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -22,11 +22,12 @@ export default class App extends Component<Props> {
       isRefreshing: false,
     }
 
+    this.forumId = ['3,4,5', '3', '4', '5']
+    this.topicCategories = ['getAll', 'getNews', 'getEvaluatings', 'getVideos']
   }
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
-    console.log('in did mount')
   }
 
   handlePress = (id) => {
@@ -36,10 +37,10 @@ export default class App extends Component<Props> {
     })
   }
 
-  handleScroll = () => {
+  handleEndReach = () => {
     const {fetchTopics, meta, isLoading} = this.props.store.topicStore
-
-    !isLoading && !meta.last && fetchTopics(meta.number + 1)
+    console.log('in end')
+    !isLoading && !meta.last && fetchTopics(meta.number + 1, 10, this.forumId[this.state.activeIndex])
   }
 
   handleRefresh = () => {
@@ -55,13 +56,17 @@ export default class App extends Component<Props> {
   }
 
   handleChangeTab = (activeIndex) => {
+    const {fetchTopics} = this.props.store.topicStore
     this.setState({
       activeIndex,
     })
+
+    fetchTopics(1, 10, this.forumId[activeIndex])
   }
 
   render() {
-    const {topics} = this.props.store.topicStore,
+    const store = this.props.store.topicStore,
+          topics = store[this.topicCategories[this.state.activeIndex]],
           titles = ['精选', '新闻', '评测', '视频']
 
 
@@ -84,7 +89,7 @@ export default class App extends Component<Props> {
           <FlatList
             data={topics}
             onRefresh={this.handleRefresh}
-            onEndReached={this.handleScroll}
+            onEndReached={this.handleEndReach}
             refreshing={this.state.isRefreshing}
             renderItem = {({item}) => (
               <TouchableWithoutFeedback onPress={() => this.handlePress(item.id)} >
