@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import HTML from 'react-native-render-html'
 
 import {
+  View,
   Text,
   ScrollView,
   StyleSheet,
@@ -25,12 +26,17 @@ export default class Detail extends Component<Props> {
     const {title, content} = this.props.store.topicStore.topic.post
     return (
       <ScrollView>
-        <Text style={styles.welcome}>
-          {title}
-        </Text>
-        {
-          content && <HTML html={content} imagesMaxWidth={Dimensions.get('window').width} />
-        }
+        <View style={styles.welcome}>
+          <Text style={styles.title}>
+            {title}
+          </Text>
+        </View>
+        <View style={styles.content}>
+          {
+            content && <HTML html={content} imagesMaxWidth={Dimensions.get('window').width} />
+          }
+        </View>
+
       </ScrollView>
     );
   }
@@ -39,18 +45,27 @@ export default class Detail extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   welcome: {
+    padding: 10,
+    borderBottomWidth: 1,
+    backgroundColor: 'white',
+    borderBottomColor: 'black',
+  },
+  title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
   },
   instructions: {
-    textAlign: 'center',
-    color: '#333333',
     marginBottom: 5,
+    color: '#333333',
+    textAlign: 'center',
   },
+  content: {
+    padding: 10,
+    backgroundColor: 'white',
+  }
 });

@@ -1,6 +1,8 @@
 import {path} from 'ramda'
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import CookieManager from 'react-native-cookies'
+
 
 import {
   View,
@@ -28,6 +30,22 @@ export default class App extends Component<Props> {
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
+    CookieManager.set({
+      name: 'strong',
+      value: 'strongcookie',
+      domain: 'www.mifanxing.com',
+      origin: 'sdfs',
+      path: '/',
+      version: '1',
+      expiration: '2019-09-30T12:30:00.00-05:00'
+    })
+      .then(res => {
+        console.log('success cookie' , res)
+        CookieManager.getAll()
+          .then((res) => {
+            console.log('CookieManager.getAll =>', res);
+          });
+      })
   }
 
   handlePress = (id) => {
