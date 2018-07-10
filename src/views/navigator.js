@@ -5,8 +5,15 @@ import {StackNavigator} from 'react-navigation'
 import store from '../store'
 import HomeScreen from './home'
 import DetailScreen from './detail'
+import LoginScreen from './login/Login'
 
 const Navigator = StackNavigator({
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerTitle: 'Login'
+    }
+  },
   Home: {
     screen: HomeScreen,
     navigationOptions: {
@@ -18,7 +25,7 @@ const Navigator = StackNavigator({
     navigationOptions: {
       headerTitle: 'Detail'
     }
-  }
+  },
 })
 
 
