@@ -12,6 +12,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import dayjs from "dayjs";
+
 @inject('store')
 @observer // 将react组件转变为响应式组件, 数据改变自动触发render函数
 export default class Login extends Component<Props> {
@@ -19,8 +21,8 @@ export default class Login extends Component<Props> {
     super(props)
 
     this.state = {
-      account: '',
-      password: '',
+      account: '13716460164',
+      password: 'li80233083',
     }
 
     this.forumId = ['3,4,5', '3', '4', '5']
@@ -28,27 +30,15 @@ export default class Login extends Component<Props> {
   }
 
   componentWillMount() {
-    this.props.store.topicStore.fetchTopics(1)
-    CookieManager.set({
-      name: 'strong',
-      value: 'strongcookie',
-      domain: 'www.mifanxing.com',
-      origin: 'sdfs',
-      path: '/',
-      version: '1',
-      expiration: '2019-09-30T12:30:00.00-05:00'
-    })
-      .then(res => {
-        console.log('success cookie' , res)
-        CookieManager.getAll()
-          .then((res) => {
-            console.log('CookieManager.getAll =>', res);
-          });
-      })
+
+
   }
 
   handleSubmit = () => {
-    console.log('in submit', this.state.account, this.state.password)
+    const {login} = this.props.store.userStore,
+          {account, password} = this.state
+
+    login(account, password)
   }
 
   render() {
@@ -73,7 +63,6 @@ export default class Login extends Component<Props> {
           </View>
           <Button
             title="点击登录"
-            color=""
             onPress={this.handleSubmit}
             accessibilityLabel="Learn more about this purple button"
           />

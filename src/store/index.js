@@ -1,14 +1,19 @@
-import {TopicStore} from './topics'
-import {types, getEnv} from 'mobx-state-tree'
-import axios from 'axios'
+import {types} from 'mobx-state-tree'
 
-axios.defaults.baseURL = 'http://www.mifanxing.com/api'
+import {UserStore} from './user'
+import {TopicStore} from './topics'
+
+
 
 
 const Store = types.
   model('mifanxing', {
     topicStore: types.optional(TopicStore, {
       topics: [],
+
+    }),
+    userStore: types.optional(UserStore, {
+      token: ''
     })
   })
   .actions(self => ({
