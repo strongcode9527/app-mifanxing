@@ -1,8 +1,6 @@
-import {path} from 'ramda'
 import React, { Component } from 'react'
+import Toast from 'react-native-easy-toast'
 import { inject, observer } from 'mobx-react'
-import CookieManager from 'react-native-cookies'
-
 
 import {
   View,
@@ -12,7 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import dayjs from "dayjs";
+
 
 @inject('store')
 @observer // 将react组件转变为响应式组件, 数据改变自动触发render函数
@@ -21,17 +19,21 @@ export default class Login extends Component<Props> {
     super(props)
 
     this.state = {
-      account: '13716460164',
-      password: 'li80233083',
+      account: '',
+      password: '',
     }
 
     this.forumId = ['3,4,5', '3', '4', '5']
     this.topicCategories = ['getAll', 'getNews', 'getEvaluatings', 'getVideos']
   }
 
-  componentWillMount() {
-
-
+  componentWillUpdate(nextProps) {
+    const {error, clearError} = nextProps.store.userStore
+    console.log(error)
+    if(error) {
+      this.refs.toast.show(error)
+      clearError()
+    }
   }
 
   handleSubmit = () => {
@@ -42,6 +44,7 @@ export default class Login extends Component<Props> {
   }
 
   render() {
+    console.log('render', this.props.store.userStore.error)
     return (
       <View style={styles.container}>
         <View style={styles.body}>
@@ -67,6 +70,11 @@ export default class Login extends Component<Props> {
             accessibilityLabel="Learn more about this purple button"
           />
         </View>
+        <Toast
+          ref="toast"
+          position="top"
+          textStyle={{color:'white'}}
+        />
       </View>
     );
   }

@@ -10,10 +10,10 @@ const Store = types.
   model('mifanxing', {
     topicStore: types.optional(TopicStore, {
       topics: [],
-
     }),
     userStore: types.optional(UserStore, {
-      token: ''
+      token: '',
+      error: '',
     })
   })
   .actions(self => ({
