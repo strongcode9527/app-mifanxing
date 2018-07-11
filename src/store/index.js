@@ -17,9 +17,9 @@ const Store = types.
     })
   })
   .actions(self => ({
-    // afterCreate() {
-    //   self.topicStore.fetchTopics()
-    // }
+    afterCreate() {
+      // self.userStore
+    }
   }))
 
 export default Store

@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import {pathOr, path} from 'ramda'
 import {types, flow} from 'mobx-state-tree'
 import CookieManager from 'react-native-cookies'
+
 import * as api from '../api'
 
 export const UserStore = types
@@ -13,7 +14,7 @@ export const UserStore = types
   }))
   .actions(self => {
 
-    const login = flow(function* (account, password) {
+    const login = flow(function* (account, password, navigation) {
       try{
         const json = yield api.login(account, password)
 
@@ -33,16 +34,19 @@ export const UserStore = types
         })
 
         self.token = access_token
+        navigation.navigate('Home')
       }catch(e) {
         self.error = path(['response', 'data', 'errors', '0', 'detail'], e)
       }
-
-
     })
 
 
     const clearError = () => {
       self.error = ''
+    }
+
+    const fetchUserInfo = () => {
+      
     }
 
     return {

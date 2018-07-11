@@ -40,7 +40,7 @@ export default class Login extends Component<Props> {
     const {login} = this.props.store.userStore,
           {account, password} = this.state
 
-    login(account, password)
+    login(account, password, this.props.navigation)
   }
 
   render() {

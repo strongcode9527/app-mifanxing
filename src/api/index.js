@@ -24,5 +24,6 @@ export const login = (username, password) => {
   return oauthResource('post', 'token', {data})
 }
 
+export const fetchUserInfo = (id)
 
 

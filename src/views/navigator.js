@@ -8,16 +8,16 @@ import DetailScreen from './detail'
 import LoginScreen from './login/Login'
 
 const Navigator = StackNavigator({
-  Login: {
-    screen: LoginScreen,
-    navigationOptions: {
-      headerTitle: 'Login'
-    }
-  },
   Home: {
     screen: HomeScreen,
     navigationOptions: {
       headerTitle: 'Home'
+    }
+  },
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerTitle: 'Login'
     }
   },
   Detail: {
@@ -26,6 +26,7 @@ const Navigator = StackNavigator({
       headerTitle: 'Detail'
     }
   },
+
 })
 
 

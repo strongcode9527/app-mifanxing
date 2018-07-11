@@ -30,22 +30,13 @@ export default class App extends Component<Props> {
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
-    CookieManager.set({
-      name: 'strong',
-      value: 'strongcookie',
-      domain: 'www.mifanxing.com',
-      origin: 'sdfs',
-      path: '/',
-      version: '1',
-      expiration: '2019-09-30T12:30:00.00-05:00'
-    })
-      .then(res => {
-        console.log('success cookie' , res)
-        CookieManager.getAll()
-          .then((res) => {
-            console.log('CookieManager.getAll =>', res);
-          });
-      })
+    
+    console.log('in will ')
+    CookieManager.getAll()
+      .then((res) => {
+        console.log('CookieManager.getAll =>', res);
+      });
+      
   }
 
   handlePress = (id) => {
@@ -57,12 +48,12 @@ export default class App extends Component<Props> {
 
   handleEndReach = () => {
     const {fetchTopics, meta, isLoading} = this.props.store.topicStore
-    console.log('in end')
+  
     !isLoading && !meta.last && fetchTopics(meta.number + 1, 10, this.forumId[this.state.activeIndex])
   }
 
   handleRefresh = () => {
-    console.log('in refresh')
+
     this.setState({
       isRefreshing: true,
     })
@@ -82,6 +73,11 @@ export default class App extends Component<Props> {
     fetchTopics(1, 10, this.forumId[activeIndex])
   }
 
+  handleLogin = () => {
+    const {navigation} = this.props
+    navigation.navigate('Login')
+  }
+
   render() {
     const store = this.props.store.topicStore,
           topics = store[this.topicCategories[this.state.activeIndex]],
@@ -90,6 +86,16 @@ export default class App extends Component<Props> {
 
     return (
       <View>
+        <View style={styles.header}>
+          {
+            <Text
+              style={styles.category}
+              onPress={this.handleLogin}
+            >
+              登录
+            </Text>
+          }
+        </View>
         <View style={styles.header}>
           {
             titles.map((title, index) => (
