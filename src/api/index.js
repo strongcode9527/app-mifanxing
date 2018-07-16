@@ -1,4 +1,4 @@
-import {topicsResource, oauthResource} from './resource'
+import {topicsResource, oauthResource, userResource} from './resource'
 
 export const fetchTopics = (page, size, forumId) => {
   const params = {
@@ -24,6 +24,8 @@ export const login = (username, password) => {
   return oauthResource('post', 'token', {data})
 }
 
-export const fetchUserInfo = (id)
+export const fetchUserInfo = (id) => {
+  return userResource('get', id)
+}
 
 

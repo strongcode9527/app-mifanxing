@@ -44,7 +44,6 @@ export default class Login extends Component<Props> {
   }
 
   render() {
-    console.log('render', this.props.store.userStore.error)
     return (
       <View style={styles.container}>
         <View style={styles.body}>

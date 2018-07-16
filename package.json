@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "dayjs": "^1.7.3",
+    "jwt-decode": "^2.2.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "mobx-state-tree": "^2.2.0",

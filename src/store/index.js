@@ -14,6 +14,7 @@ const Store = types.
     userStore: types.optional(UserStore, {
       token: '',
       error: '',
+      userId: '',
     })
   })
   .actions(self => ({
