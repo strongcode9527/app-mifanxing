@@ -30,13 +30,6 @@ export default class App extends Component<Props> {
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
-    
-    console.log('in will ')
-    CookieManager.getAll()
-      .then((res) => {
-        console.log('CookieManager.getAll =>', res);
-      });
-      
   }
 
   handlePress = (id) => {
@@ -81,19 +74,25 @@ export default class App extends Component<Props> {
   render() {
     const store = this.props.store.topicStore,
           topics = store[this.topicCategories[this.state.activeIndex]],
-          titles = ['精选', '新闻', '评测', '视频']
+          titles = ['精选', '新闻', '评测', '视频'],
+          userInfo = this.props.store.userStore.userInfo
 
 
     return (
       <View>
         <View style={styles.header}>
           {
-            <Text
-              style={styles.category}
-              onPress={this.handleLogin}
-            >
-              登录
-            </Text>
+            userInfo.userAvatar
+            ? <Image
+                style={{width: '100%', height: 150}}
+                source={{uri: userInfo.userAvatar}}
+              />
+            : <Text
+                style={styles.category}
+                onPress={this.handleLogin}
+              >
+                登录
+              </Text>
           }
         </View>
         <View style={styles.header}>

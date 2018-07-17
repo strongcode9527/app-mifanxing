@@ -1,7 +1,29 @@
 import axios from "axios/index";
+import CookieManager from "react-native-cookies";
 
 
 axios.defaults.baseURL = 'http://www.mifanxing.com/api'
+
+let token = ''
+
+CookieManager.getAll()
+.then((res) => {
+    token = res.token.value
+    axios.interceptors.request.use(function (config) {
+      config.headers = config.headers || {}
+      if (token) {
+        config.headers.Authorization = 'Bearer ' + token
+      }
+      return config
+    }, function (error) {
+      // Do something with request error
+      return Promise.reject(error)
+    })
+});
+
+
+// 请求添加token
+
 
 
 

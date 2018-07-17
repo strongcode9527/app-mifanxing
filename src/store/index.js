@@ -15,11 +15,12 @@ const Store = types.
       token: '',
       error: '',
       userId: '',
+      userInfo: {fullname: '', userAvatar: ''}
     })
   })
   .actions(self => ({
     afterCreate() {
-      // self.userStore
+      self.userStore.fetchUserInfo()
     }
   }))
 
