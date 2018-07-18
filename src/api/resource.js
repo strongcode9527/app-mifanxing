@@ -6,9 +6,12 @@ axios.defaults.baseURL = 'http://www.mifanxing.com/api'
 
 let token = ''
 
-CookieManager.getAll()
-.then((res) => {
-    token = res.token.value
+
+
+
+export const injectToken = (token) => {
+
+  function inject(token) {
     axios.interceptors.request.use(function (config) {
       config.headers = config.headers || {}
       if (token) {
@@ -19,14 +22,22 @@ CookieManager.getAll()
       // Do something with request error
       return Promise.reject(error)
     })
-});
+  }
+
+
+  if(token) {
+    inject(token)
+  }else {
+    CookieManager.getAll()
+      .then((res) => {
+        inject(res.token.value)
+      });
+  }
+
+}
 
 
 // 请求添加token
-
-
-
-
 
 export const topicsResource = (method, id, data, api='article/topics') => {
   return axios[method](api+ (id?('/'+id):''), data)

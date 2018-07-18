@@ -79,8 +79,6 @@ export default class App extends Component<Props> {
           titles = ['精选', '新闻', '评测', '视频'],
           userInfo = this.props.store.userStore.userInfo
 
-    console.log(userInfo)
-
     return (
       <View>
         <View style={styles.header}>
@@ -98,7 +96,7 @@ export default class App extends Component<Props> {
                 </Text>
               </TouchableWithoutFeedback>
           }
-          <Text style={styles.title} onPress={this.handleLogin}>米饭星</Text>
+          <Text style={styles.title}>米饭星</Text>
         </View>
         <View style={styles.tab}>
           {
@@ -206,6 +204,7 @@ const styles = StyleSheet.create({
   },
   login: {
     right: 5,
+    zIndex: 10,
     fontSize: 18,
     color: 'white',
     lineHeight: 60,

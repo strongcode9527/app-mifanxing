@@ -5,7 +5,7 @@ import {types, flow} from 'mobx-state-tree'
 import CookieManager from 'react-native-cookies'
 
 import * as api from '../api'
-import axios from "axios/index";
+import {injectToken} from '../api/resource'
 
 
 const userInfo = types.model('userInfo', {
@@ -36,6 +36,7 @@ export const UserStore = types
 
         now.setDate(now.getDate() + 7)
 
+        // 存储token为cookie
         CookieManager.set({
           path: '/',
           origin: '',
@@ -45,12 +46,20 @@ export const UserStore = types
           domain: 'www.mifanxing.com',
           expiration: dayjs(now).format('YYYY-MM-DDTHH:mm:ss.sssZ'),
         })
+
+        // 登陆成功后，配置axios的请求头部信息。添加用户token
+        injectToken(access_token)
+
+        // 用户成功登陆后，直接获取用户信息。
+
         const userId = pathOr('', ['user_id'], jwtDecode(access_token))
 
         self.fetchUserInfo(userId)
 
         self.userId = userId
         self.token = access_token
+
+        // 跳转回主页
         navigation.navigate('Home')
       }catch(e) {
         self.error = path(['response', 'data', 'errors', '0', 'detail'], e)
