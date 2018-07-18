@@ -30,6 +30,7 @@ export default class App extends Component<Props> {
 
   componentWillMount() {
     this.props.store.topicStore.fetchTopics(1)
+    // CookieManager.clearAll()
   }
 
   handlePress = (id) => {
@@ -69,6 +70,7 @@ export default class App extends Component<Props> {
   handleLogin = () => {
     const {navigation} = this.props
     navigation.navigate('Login')
+    console.log('login')
   }
 
   render() {
@@ -77,6 +79,7 @@ export default class App extends Component<Props> {
           titles = ['精选', '新闻', '评测', '视频'],
           userInfo = this.props.store.userStore.userInfo
 
+    console.log(userInfo)
 
     return (
       <View>
@@ -84,18 +87,20 @@ export default class App extends Component<Props> {
           {
             userInfo.userAvatar
             ? <Image
-                style={{width: '100%', height: 150}}
+                style={styles.avatar}
                 source={{uri: userInfo.userAvatar}}
               />
-            : <Text
-                style={styles.category}
-                onPress={this.handleLogin}
-              >
-                登录
-              </Text>
+            : <TouchableWithoutFeedback onPress={this.handleLogin}>
+                <Text
+                  style={styles.login}
+                >
+                  登录
+                </Text>
+              </TouchableWithoutFeedback>
           }
+          <Text style={styles.title} onPress={this.handleLogin}>米饭星</Text>
         </View>
-        <View style={styles.header}>
+        <View style={styles.tab}>
           {
             titles.map((title, index) => (
               <Text
@@ -140,10 +145,15 @@ export default class App extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  header: {
+  tab: {
     flex: 0,
     flexDirection: 'row',
     backgroundColor: 'white',
+  },
+  header: {
+    height: 60,
+    position: 'relative',
+    backgroundColor: 'red',
   },
   category: {
     padding: 10,
@@ -159,6 +169,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
+    fontSize: 24,
+    lineHeight: 60,
+    color: 'white',
     textAlign: 'center',
   },
   all: {
@@ -182,5 +195,20 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     marginBottom: 10,
+  },
+  avatar: {
+    top: 5,
+    right: 5,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    position: 'absolute',
+  },
+  login: {
+    right: 5,
+    fontSize: 18,
+    color: 'white',
+    lineHeight: 60,
+    position: 'absolute',
   }
 });
